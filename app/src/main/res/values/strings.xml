@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Rally</string>
     <string name="title_activity_main">Rally</string>
+    <string name="google_maps_key">AIzaSyDcU6w-OH1fWuS4BELvL3qQukEMMfXVYyo</string>
 </resources>
