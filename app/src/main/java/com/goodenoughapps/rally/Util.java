@@ -1,5 +1,6 @@
 package com.goodenoughapps.rally;
 
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
@@ -16,15 +17,15 @@ public class Util {
      * @param points The points to find the middle point from
      * @return The LatLng object which is the middle point
      */
-    public static LatLng getMidPoint(List<LatLng> points) {
+    public static LatLng getMidPoint(List<Place> points) {
 
         double latSum = 0;
         double lngSum = 0;
 
-        for(LatLng point  : points) {
+        for(Place point  : points) {
 
-            latSum += point.latitude;
-            lngSum += point.longitude;
+            latSum += point.getLatLng().latitude;
+            lngSum += point.getLatLng().longitude;
 
         }
 
