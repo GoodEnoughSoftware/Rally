@@ -1,5 +1,19 @@
 <resources>
     <string name="app_name">Rally</string>
     <string name="title_activity_main">Rally</string>
-    <string name="google_maps_key">AIzaSyDcU6w-OH1fWuS4BELvL3qQukEMMfXVYyo</string>
+    <string name="google_maps_key">AIzaSyDcU6w-OH1fWuS4BELvL3qQukEMMfXVYyo</string>>
+    <string name="dialog_title">Filter Locations</string>
+    <string-array name="location_types">
+        <item>Bar</item>
+        <item>Book Store</item>
+        <item>Cafe</item>
+        <item>Library</item>
+        <item>Night Club</item>
+        <item>Park</item>
+        <item>Restaurant</item>
+        <item>School</item>
+        <item>Shopping Mall</item>
+        <item>University</item>
+    </string-array>
+    <string name="choose">Confirm</string>
 </resources>
