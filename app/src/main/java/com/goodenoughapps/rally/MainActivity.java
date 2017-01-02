@@ -29,6 +29,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.vision.text.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +42,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private Activity activity;
     private List<Place> places;
     private LinearLayout placesLinearLayout;
-
+    private int classIndex = -1;
     private final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 71;
 
     @Override
@@ -62,16 +63,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         addLocationFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    Intent intent =
-                            new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
-                                    .build(activity);
-                    startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
-                } catch (GooglePlayServicesRepairableException e) {
-                    // TODO: Handle the error.
-                } catch (GooglePlayServicesNotAvailableException e) {
-                    // TODO: Handle the error.
-                }
+                openPlaceSearch();
             }
         });
         doneFab.setOnClickListener(new View.OnClickListener() {
@@ -91,12 +83,14 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(this, data);
                 addNewLocation(place);
+                if(classIndex!= -1) {
+                    removePlace(classIndex);
+                    classIndex = -1;
+                }
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);
                 // TODO: Show an error message dialog.
-                // Log.i(TAG, status.getStatusMessage());
-
-            }
+            } else if (resultCode == RESULT_CANCELED) {}
         }
     }
 
@@ -175,6 +169,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         // For each place in places
         for(int i=0; i<places.size(); i++) {
 
+            final Integer index = new Integer(i);
+
             Place place = places.get(i);
 
             // Inflate a UI view
@@ -182,10 +178,16 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             LinearLayout entryLinearLayout = (LinearLayout) inflater.inflate(R.layout.place_list_view, null);
 
             // Add the place name
-            ((TextView) entryLinearLayout.findViewById(R.id.placeNameTextView)).setText(place.getName());
-
+            TextView nameTextView = (TextView) entryLinearLayout.findViewById(R.id.placeNameTextView);
+            nameTextView.setText(place.getName());
+            nameTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    openPlaceSearch();
+                    classIndex = index;
+                }
+            });
             // Attach a remove listener
-            final Integer index = new Integer(i);
             ((ImageButton) entryLinearLayout.findViewById(R.id.imageButton)).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -223,5 +225,18 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+    }
+
+    public void openPlaceSearch() {
+        try {
+            Intent intent =
+                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                            .build(activity);
+            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+        } catch (GooglePlayServicesRepairableException e) {
+            // TODO: Handle the error.
+        } catch (GooglePlayServicesNotAvailableException e) {
+            // TODO: Handle the error.
+        }
     }
 }
