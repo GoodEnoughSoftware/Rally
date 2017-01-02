@@ -19,15 +19,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true" />
 
-    <fragment
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/map"
-        tools:context="com.goodenoughapps.rally.MainActivity"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/confirmLocationsFAB"
         android:src="@drawable/ic_confirm"
@@ -39,5 +30,33 @@
         android:layout_marginBottom="16dp"
         android:layout_above="@+id/locationPickerFAB"
         android:layout_alignStart="@+id/locationPickerFAB" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="125dp"
+        android:id="@+id/scrollView2">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/listBackground"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:paddingBottom="8dp">
+
+            <include layout="@layout/place_list_view" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/map"
+        tools:context="com.goodenoughapps.rally.MainActivity"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/scrollView2" />
+
 
 </RelativeLayout>
