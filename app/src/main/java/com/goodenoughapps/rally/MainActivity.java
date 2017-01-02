@@ -1,11 +1,16 @@
 package com.goodenoughapps.rally;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -28,6 +33,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private FloatingActionButton addLocationFab;
     private Activity activity;
     private List<Place> places;
+    private LinearLayout placesLinearLayout;
 
     private final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 71;
 
@@ -35,6 +41,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        placesLinearLayout = (LinearLayout) findViewById(R.id.placesListLinearLayout);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -119,16 +127,36 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     public void updateLocationList() {
 
         // Reset the entire list UI
+        placesLinearLayout.removeAllViews();
 
         // For each place in places
+        for(int i=0; i<places.size(); i++) {
+
+            Place place = places.get(i);
 
             // Inflate a UI view
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LinearLayout entryLinearLayout = (LinearLayout) inflater.inflate(R.layout.place_list_view, null);
 
             // Add the place name
+            ((TextView) entryLinearLayout.findViewById(R.id.placeNameTextView)).setText(place.getName());
 
             // Attach a remove listener
+            final Integer index = new Integer(i);
+            ((ImageButton) entryLinearLayout.findViewById(R.id.imageButton)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    removePlace(index);
+                }
+            });
 
             // Add the view to the list UI
+
+        }
+
+    }
+
+    public void removePlace(int index) {
 
     }
 
