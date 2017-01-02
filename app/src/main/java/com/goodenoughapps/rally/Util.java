@@ -2,6 +2,7 @@ package com.goodenoughapps.rally;
 
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.util.List;
 
@@ -30,6 +31,56 @@ public class Util {
         }
 
         return new LatLng(latSum / (double) points.size(), lngSum / (double) points.size());
+
+    }
+
+    /**
+     * Returns a bounding box for a list of places, with margins
+     * @param points The places to create a bounding box for
+     * @return The bounding box object
+     */
+    public static LatLngBounds getBounds(List<Place> points) {
+
+        double west = 0.0;
+        double east = 0.0;
+        double north = 0.0;
+        double south = 0.0;
+
+        for (int lc = 0; lc < points.size(); lc++)
+        {
+            LatLng loc = points.get(lc).getLatLng();
+            if (lc == 0)
+            {
+                north = loc.latitude;
+                south = loc.latitude;
+                west = loc.longitude;
+                east = loc.longitude;
+            }
+            else
+            {
+                if (loc.latitude > north)
+                {
+                    north = loc.latitude;
+                }
+                else if (loc.latitude < south)
+                {
+                    south = loc.latitude;
+                }
+                if (loc.longitude < west)
+                {
+                    west = loc.longitude;
+                }
+                else if (loc.longitude > east)
+                {
+                    east = loc.longitude;
+                }
+            }
+        }
+
+        LatLng northEast = new LatLng(north, east);
+        LatLng southWest = new LatLng(south, west);
+
+        return new LatLngBounds(southWest, northEast);
 
     }
 

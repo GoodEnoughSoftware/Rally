@@ -99,12 +99,36 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     public void addNewLocation(Place place) {
 
         // Add the location to the places list
+        places.add(place);
 
         // Draw a marker on the map
+        LatLng location = place.getLatLng();
+        mMap.addMarker(new MarkerOptions().position(location).title(place.getName().toString()));
 
         // Reposition the map by changing the bounding box
+        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(Util.getBounds(places), 128));
 
         // Update the list of locations UI
+        updateLocationList();
+
+    }
+
+    /**
+     * Updates the list of locations at the top of the screen
+     */
+    public void updateLocationList() {
+
+        // Reset the entire list UI
+
+        // For each place in places
+
+            // Inflate a UI view
+
+            // Add the place name
+
+            // Attach a remove listener
+
+            // Add the view to the list UI
 
     }
 
