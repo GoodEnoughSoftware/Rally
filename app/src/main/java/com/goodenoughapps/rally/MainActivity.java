@@ -3,9 +3,11 @@ package com.goodenoughapps.rally;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -31,6 +33,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private FloatingActionButton addLocationFab;
+    private FloatingActionButton doneFab;
     private Activity activity;
     private List<Place> places;
     private LinearLayout placesLinearLayout;
@@ -51,6 +54,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         this.activity = this;
 
         addLocationFab = (FloatingActionButton) findViewById(R.id.locationPickerFAB);
+        doneFab = (FloatingActionButton) findViewById(R.id.confirmLocationsFAB);
         addLocationFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,6 +68,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 } catch (GooglePlayServicesNotAvailableException e) {
                     // TODO: Handle the error.
                 }
+            }
+        });
+        doneFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onDoneClicked();
             }
         });
 
@@ -97,6 +107,14 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     public void onDoneClicked() {
 
         LatLng midPoint = Util.getMidPoint(places);
+
+        Log.i("MIDPOINT", midPoint.toString());
+
+        // Search for restaurants in San Francisco
+        Uri gmmIntentUri = Uri.parse("geo:" + midPoint.latitude + "," + midPoint.longitude + "?q=cafe");
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        startActivity(mapIntent);
 
     }
 
@@ -151,12 +169,17 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             });
 
             // Add the view to the list UI
+            placesLinearLayout.addView(entryLinearLayout);
 
         }
 
     }
 
     public void removePlace(int index) {
+
+        places.remove(index);
+        updateLocationList();
+        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(Util.getBounds(places), 128));
 
     }
 
@@ -172,10 +195,5 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 }
