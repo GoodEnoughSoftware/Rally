@@ -58,7 +58,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         });
-        
+
         this.places = new ArrayList<>();
 
     }
@@ -68,7 +68,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(this, data);
-                // TODO: Add place to list of places, add to map
+                addNewLocation(place);
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);
                 // TODO: Show an error message dialog.
@@ -81,6 +81,31 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    /**
+     * Methods which gets called once the user is done entering places
+     */
+    public void onDoneClicked() {
+
+        LatLng midPoint = Util.getMidPoint(places);
+
+    }
+
+    /**
+     * Method which gets called once a place is added
+     * @param place The place to add
+     */
+    public void addNewLocation(Place place) {
+
+        // Add the location to the places list
+
+        // Draw a marker on the map
+
+        // Reposition the map by changing the bounding box
+
+        // Update the list of locations UI
+
     }
 
     /**
