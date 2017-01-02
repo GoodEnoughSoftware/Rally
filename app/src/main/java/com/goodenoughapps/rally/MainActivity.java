@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -14,6 +15,9 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.goodenoughapps.rally.domain.PlaceType;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
@@ -105,16 +109,27 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
      * Methods which gets called once the user is done entering places
      */
     public void onDoneClicked() {
+        new MaterialDialog.Builder(this)
+                .title(R.string.dialog_title)
+                .items(R.array.location_types)
+                .positiveText(R.string.choose)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        int selected = dialog.getSelectedIndex();
+                        String type = PlaceType.values()[selected].getCodeString();
 
-        LatLng midPoint = Util.getMidPoint(places);
+                        LatLng midPoint = Util.getMidPoint(places);
 
-        Log.i("MIDPOINT", midPoint.toString());
+                        // Search for restaurants in San Francisco
+                        Uri gmmIntentUri = Uri.parse("geo:" + midPoint.latitude + "," + midPoint.longitude + "?q=" + type);
+                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                        mapIntent.setPackage("com.google.android.apps.maps");
+                        startActivity(mapIntent);
 
-        // Search for restaurants in San Francisco
-        Uri gmmIntentUri = Uri.parse("geo:" + midPoint.latitude + "," + midPoint.longitude + "?q=cafe");
-        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-        mapIntent.setPackage("com.google.android.apps.maps");
-        startActivity(mapIntent);
+                    }
+                })
+                .show();
 
     }
 
