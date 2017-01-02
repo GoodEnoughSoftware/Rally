@@ -179,7 +179,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         places.remove(index);
         updateLocationList();
-        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(Util.getBounds(places), 128));
+
+        if(places.size() != 0) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(Util.getBounds(places), 128));
+        }
 
     }
 
