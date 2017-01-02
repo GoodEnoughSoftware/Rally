@@ -4,7 +4,9 @@ import com.goodenoughapps.rally.domain.PlaceType;
 import com.goodenoughapps.rally.domain.Suggestion;
 import com.google.android.gms.maps.model.LatLng;
 
-import java.io.IOException;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,12 +46,29 @@ public class RestCalls {
             Response response = client.newCall(request).execute();
             String result =  response.body().string();
 
+            // Create a JSON object and parse it
+            JSONObject jObj = new JSONObject(result);
+            JSONArray jArr = jObj.getJSONArray("results");
+
             List<Suggestion> suggestions = new ArrayList<>();
+
+            for(int i = 0; i < jArr.length(); i++) {
+
+                JSONObject placeObj = jArr.getJSONObject(i);
+                String address = placeObj.getString("formatted_address");
+                String name = placeObj.getString("name");
+                double latitude = placeObj.getJSONObject("geometry").getJSONObject("location").getDouble("lat");
+                double longitude = placeObj.getJSONObject("geometry").getJSONObject("location").getDouble("lng");
+
+                Suggestion suggest = new Suggestion(name, address, new LatLng(latitude, longitude));
+                suggestions.add(suggest);
+
+            }
 
             return suggestions;
 
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             return new ArrayList<>();
         }
 
