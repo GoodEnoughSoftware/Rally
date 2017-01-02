@@ -8,6 +8,7 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/locationPickerFAB"
+        android:src="@drawable/ic_add"
         app:backgroundTint="@color/colorPrimary"
         android:layout_width="56dp"
         android:layout_height="56dp"
@@ -26,5 +27,17 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/confirmLocationsFAB"
+        android:src="@drawable/ic_confirm"
+        app:backgroundTint="@color/colorAccent"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom"
+        android:clickable="true"
+        android:layout_marginBottom="16dp"
+        android:layout_above="@+id/locationPickerFAB"
+        android:layout_alignStart="@+id/locationPickerFAB" />
 
 </RelativeLayout>
