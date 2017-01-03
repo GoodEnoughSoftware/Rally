@@ -25,7 +25,7 @@
         tools:context="com.goodenoughapps.rally.MainActivity"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/scrollView2" />
+        android:layout_below="@+id/confirmationRelativeLayout" />
 
     <com.goodenoughapps.rally.views.ScrollViewWithMaxHeight
         android:layout_width="match_parent"
