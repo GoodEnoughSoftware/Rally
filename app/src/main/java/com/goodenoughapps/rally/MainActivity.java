@@ -3,9 +3,11 @@ package com.goodenoughapps.rally;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -91,14 +93,15 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(this, data);
                 addNewLocation(place);
-                if(classIndex!= -1) {
+                if (classIndex != -1) {
                     removePlace(classIndex);
                     classIndex = -1;
                 }
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);
                 // TODO: Show an error message dialog.
-            } else if (resultCode == RESULT_CANCELED) {}
+            } else if (resultCode == RESULT_CANCELED) {
+            }
         }
     }
 
@@ -173,7 +176,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         mMap.clear();
 
-        for(Place place : places) {
+        for (Place place : places) {
             LatLng location = place.getLatLng();
             mMap.addMarker(new MarkerOptions().position(location).title(place.getName().toString()));
         }
@@ -198,7 +201,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         placesLinearLayout.removeAllViews();
 
         // For each place in places
-        for(int i=0; i<places.size(); i++) {
+        for (int i = 0; i < places.size(); i++) {
 
             final Integer index = new Integer(i);
 
@@ -243,9 +246,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         updateLocationList();
         resetMapMarkers();
 
-        if(places.size() != 0) {
+        if (places.size() != 0) {
             mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(Util.getBounds(places), 128));
-        } else if(places.size() == 0) {
+        } else if (places.size() == 0) {
             confirmRelativeLayout.setVisibility(View.GONE);
         }
 
@@ -263,6 +266,17 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+        } else {
+            mMap.setMyLocationEnabled(true);
+        }
     }
 
     public void openPlaceSearch() {
