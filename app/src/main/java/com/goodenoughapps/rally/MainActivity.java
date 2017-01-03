@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -43,6 +44,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private Activity activity;
     private List<Place> places;
     private LinearLayout placesLinearLayout;
+    private RelativeLayout confirmRelativeLayout;
     private int classIndex = -1;
     private final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 71;
 
@@ -59,8 +61,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         this.activity = this;
 
+        confirmRelativeLayout = (RelativeLayout) findViewById(R.id.confirmationRelativeLayout);
         addLocationFab = (FloatingActionButton) findViewById(R.id.locationPickerFAB);
         doneButton = (Button) findViewById(R.id.confirmationButton);
+        confirmRelativeLayout.setVisibility(View.GONE);
         addLocationFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -170,6 +174,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         // Hide and show things based on number of places
         if (places.size() > 0) {
             placesLinearLayout.setVisibility(View.VISIBLE);
+            confirmRelativeLayout.setVisibility(View.VISIBLE);
+
         } else {
             placesLinearLayout.setVisibility(View.GONE);
         }
