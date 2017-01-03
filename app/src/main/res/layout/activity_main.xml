@@ -58,12 +58,23 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:text="@string/done"
+            android:text="@string/search"
             android:background="@android:color/transparent"
             android:textColor="#ffffff"
             android:id="@+id/confirmationButton"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="@string/clear_all"
+            android:background="@android:color/transparent"
+            android:textColor="#ffffff"
+            android:id="@+id/clearAllButton"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="4dp"/>
 
     </RelativeLayout>
 

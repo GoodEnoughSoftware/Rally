@@ -41,6 +41,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private FloatingActionButton addLocationFab;
     private Button doneButton;
+    private Button clearButton;
     private Activity activity;
     private List<Place> places;
     private LinearLayout placesLinearLayout;
@@ -64,6 +65,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         confirmRelativeLayout = (RelativeLayout) findViewById(R.id.confirmationRelativeLayout);
         addLocationFab = (FloatingActionButton) findViewById(R.id.locationPickerFAB);
         doneButton = (Button) findViewById(R.id.confirmationButton);
+        clearButton = (Button) findViewById(R.id.clearAllButton);
         confirmRelativeLayout.setVisibility(View.GONE);
         addLocationFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +77,14 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
                 onDoneClicked();
+            }
+        });
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                while(places.size() > 0) {
+                    removePlace(0);
+                }
             }
         });
 
