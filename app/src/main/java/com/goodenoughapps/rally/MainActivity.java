@@ -245,6 +245,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         if(places.size() != 0) {
             mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(Util.getBounds(places), 128));
+        } else if(places.size() == 0) {
+            confirmRelativeLayout.setVisibility(View.GONE);
         }
 
     }
