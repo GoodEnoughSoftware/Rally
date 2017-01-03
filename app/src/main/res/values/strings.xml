@@ -2,7 +2,7 @@
     <string name="app_name">Rally</string>
     <string name="title_activity_main">Rally</string>
     <string name="google_maps_key">AIzaSyDcU6w-OH1fWuS4BELvL3qQukEMMfXVYyo</string>>
-    <string name="dialog_title">Filter Locations</string>
+    <string name="location_dialog_title">Filter Locations</string>
     <string-array name="location_types">
         <item>Bar</item>
         <item>Book Store</item>
@@ -20,4 +20,7 @@
     <string name="clear_all">CLEAR ALL</string>
     <string name="done">DONE</string>
     <string name="learning">Click \'+\' below to begin coordinating a meetup!</string>
+    <string name="startup_dialog_title">Welcome to Rally!</string>
+    <string name="startup_dialog_content">Add the locations of your friends and pick a type of place to meetup! Rally will choose a location which works for everyone.</string>
+    <string name="dismiss">DISMISS</string>
 </resources>

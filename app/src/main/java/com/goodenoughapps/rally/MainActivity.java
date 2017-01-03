@@ -125,7 +125,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
      */
     public void onDoneClicked() {
         new MaterialDialog.Builder(this)
-                .title(R.string.dialog_title)
+                .title(R.string.location_dialog_title)
                 .items(R.array.location_types)
                 .positiveText(R.string.choose)
                 .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
@@ -302,4 +302,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             // TODO: Handle the error.
         }
     }
+
+    public void onAppStartup() {
+        new MaterialDialog.Builder(this)
+                .title(R.string.startup_dialog_title)
+                .content(R.string.startup_dialog_content)
+                .positiveText(R.string.dismiss)
+                .show();
+    }
+
 }
