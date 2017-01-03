@@ -10,7 +10,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -33,7 +32,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.vision.text.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +45,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private List<Place> places;
     private LinearLayout placesLinearLayout;
     private RelativeLayout confirmRelativeLayout;
+    private TextView learnView;
     private int classIndex = -1;
     private final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 71;
 
@@ -65,6 +64,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         confirmRelativeLayout = (RelativeLayout) findViewById(R.id.confirmationRelativeLayout);
         addLocationFab = (FloatingActionButton) findViewById(R.id.locationPickerFAB);
+        learnView = (TextView) findViewById(R.id.learn_view);
         doneButton = (Button) findViewById(R.id.confirmationButton);
         confirmRelativeLayout.setVisibility(View.GONE);
         addLocationFab.setOnClickListener(new View.OnClickListener() {
@@ -192,9 +192,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         if (places.size() > 0) {
             placesLinearLayout.setVisibility(View.VISIBLE);
             confirmRelativeLayout.setVisibility(View.VISIBLE);
-
+            learnView.setVisibility(View.GONE);
         } else {
             placesLinearLayout.setVisibility(View.GONE);
+            learnView.setVisibility(View.VISIBLE);
         }
 
         // Reset the entire list UI

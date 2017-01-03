@@ -25,7 +25,7 @@
         tools:context="com.goodenoughapps.rally.MainActivity"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/confirmationRelativeLayout" />
+        android:layout_below="@+id/learn_view" />
 
     <com.goodenoughapps.rally.views.ScrollViewWithMaxHeight
         android:layout_width="match_parent"
@@ -66,5 +66,17 @@
             android:layout_alignParentEnd="true" />
 
     </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/learn_view"
+        android:text="@string/learning"
+        android:background="@color/listBottomBar"
+        android:layout_below="@+id/confirmationRelativeLayout"
+        android:layout_alignParentStart="true"
+        android:padding="8dp"
+        android:textColor="@android:color/white"
+        android:gravity="center_vertical|center_horizontal" />
 
 </RelativeLayout>

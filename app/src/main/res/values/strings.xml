@@ -17,4 +17,5 @@
     </string-array>
     <string name="choose">Confirm</string>
     <string name="done">DONE</string>
+    <string name="learning">Click \'+\' below to begin coordinating a meetup!</string>
 </resources>
