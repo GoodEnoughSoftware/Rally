@@ -75,6 +75,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         this.places = new ArrayList<>();
 
+        // Initial UI config
+        updateLocationList();
+
     }
 
     @Override
@@ -162,6 +165,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
      * Updates the list of locations at the top of the screen
      */
     public void updateLocationList() {
+
+        // Hide and show things based on number of places
+        if (places.size() > 0) {
+            placesLinearLayout.setVisibility(View.VISIBLE);
+        } else {
+            placesLinearLayout.setVisibility(View.GONE);
+        }
 
         // Reset the entire list UI
         placesLinearLayout.removeAllViews();
