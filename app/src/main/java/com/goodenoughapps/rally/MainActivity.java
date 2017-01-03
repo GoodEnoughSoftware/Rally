@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -38,7 +39,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private FloatingActionButton addLocationFab;
-    private FloatingActionButton doneFab;
+    private Button doneButton;
     private Activity activity;
     private List<Place> places;
     private LinearLayout placesLinearLayout;
@@ -59,14 +60,14 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         this.activity = this;
 
         addLocationFab = (FloatingActionButton) findViewById(R.id.locationPickerFAB);
-        doneFab = (FloatingActionButton) findViewById(R.id.confirmLocationsFAB);
+        doneButton = (Button) findViewById(R.id.confirmationButton);
         addLocationFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openPlaceSearch();
             }
         });
-        doneFab.setOnClickListener(new View.OnClickListener() {
+        doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onDoneClicked();
