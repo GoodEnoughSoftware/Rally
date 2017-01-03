@@ -94,7 +94,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Initial UI config
         updateLocationList();
-
     }
 
     @Override
@@ -307,7 +306,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         new MaterialDialog.Builder(this)
                 .title(R.string.startup_dialog_title)
                 .content(R.string.startup_dialog_content)
-                .positiveText(R.string.dismiss)
+                .negativeText(R.string.dismiss)
                 .show();
     }
 
