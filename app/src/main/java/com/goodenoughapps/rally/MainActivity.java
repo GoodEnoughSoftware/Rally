@@ -167,6 +167,20 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     /**
+     * Reset map markers by clearing the map
+     */
+    public void resetMapMarkers() {
+
+        mMap.clear();
+
+        for(Place place : places) {
+            LatLng location = place.getLatLng();
+            mMap.addMarker(new MarkerOptions().position(location).title(place.getName().toString()));
+        }
+
+    }
+
+    /**
      * Updates the list of locations at the top of the screen
      */
     public void updateLocationList() {
@@ -219,10 +233,15 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    /**
+     * Removes a place from the map, UI list, and internal list of places
+     * @param index The location of the place to remove, from the internal list
+     */
     public void removePlace(int index) {
 
         places.remove(index);
         updateLocationList();
+        resetMapMarkers();
 
         if(places.size() != 0) {
             mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(Util.getBounds(places), 128));
