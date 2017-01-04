@@ -150,7 +150,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
                         LatLng midPoint = Util.getMidPoint(places);
 
-                        // Search for restaurants in San Francisco
                         Uri gmmIntentUri = Uri.parse("geo:" + midPoint.latitude + "," + midPoint.longitude + "?q=" + type);
                         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                         mapIntent.setPackage("com.google.android.apps.maps");
@@ -268,8 +267,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         if (places.size() != 0) {
             mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(Util.getBounds(places), 128));
+            if (places.size() == 1) {
+                mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
+            }
         } else if (places.size() == 0) {
             confirmRelativeLayout.setVisibility(View.GONE);
+            // If only one place, zoom out
+            mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
         }
 
     }
