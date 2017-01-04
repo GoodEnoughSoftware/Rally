@@ -3,6 +3,7 @@ package com.goodenoughapps.rally;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -94,6 +95,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Initial UI config
         updateLocationList();
+
+        // Show intro dialog if first time opening application
+        onAppStartup();
+
     }
 
     @Override
@@ -172,6 +177,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Reposition the map by changing the bounding box
         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(Util.getBounds(places), 128));
+
+        // If only one place, zoom out
+        if (places.size() == 1) {
+            mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
+        }
 
         // Update the list of locations UI
         updateLocationList();
@@ -302,12 +312,27 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    /**
+     * Shows a dialog with introduction during the first use of the application
+     */
     public void onAppStartup() {
-        new MaterialDialog.Builder(this)
-                .title(R.string.startup_dialog_title)
-                .content(R.string.startup_dialog_content)
-                .negativeText(R.string.dismiss)
-                .show();
+
+        SharedPreferences prefs = getSharedPreferences("RALLY_PREFS", MODE_PRIVATE);
+
+        if (!prefs.getBoolean("returning", false)) {
+
+            SharedPreferences.Editor edit = prefs.edit();
+            edit.putBoolean("returning", true);
+            edit.apply();
+
+            new MaterialDialog.Builder(this)
+                    .title(R.string.startup_dialog_title)
+                    .content(R.string.startup_dialog_content)
+                    .negativeText(R.string.dismiss)
+                    .show();
+
+        }
+
     }
 
 }
