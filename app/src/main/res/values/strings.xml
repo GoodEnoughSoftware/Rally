@@ -4,9 +4,9 @@
     <string name="google_maps_key">AIzaSyDcU6w-OH1fWuS4BELvL3qQukEMMfXVYyo</string>>
     <string name="location_dialog_title">Filter Locations</string>
     <string-array name="location_types">
+        <item>Cafe</item>
         <item>Bar</item>
         <item>Book Store</item>
-        <item>Cafe</item>
         <item>Library</item>
         <item>Night Club</item>
         <item>Park</item>

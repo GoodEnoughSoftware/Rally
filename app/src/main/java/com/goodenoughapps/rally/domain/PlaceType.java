@@ -6,7 +6,7 @@ package com.goodenoughapps.rally.domain;
  */
 public enum PlaceType {
 
-    BAR, BOOK_STORE, CAFE, LIBRARY, NIGHT_CLUB, PARK, RESTAURANT, SCHOOL, SHOPPING_MALL, UNIVERSITY;
+    CAFE, BAR, BOOK_STORE, LIBRARY, NIGHT_CLUB, PARK, RESTAURANT, SCHOOL, SHOPPING_MALL, UNIVERSITY;
 
     /**
      * Returns the string for use in HTTP calls

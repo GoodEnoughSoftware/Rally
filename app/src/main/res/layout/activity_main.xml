@@ -8,7 +8,7 @@
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/locationPickerFAB"
         android:src="@drawable/ic_add"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/colorPrimaryDark"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_gravity="bottom"
