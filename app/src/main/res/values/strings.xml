@@ -16,7 +16,7 @@
         <item>University</item>
     </string-array>
     <string name="choose">Confirm</string>
-    <string nameg="search">SEARCH</string>
+    <string name="search">SEARCH</string>
     <string name="clear_all">CLEAR ALL</string>
     <string name="done">DONE</string>
     <string name="learning">Click \'+\' below to begin coordinating a meetup!</string>
