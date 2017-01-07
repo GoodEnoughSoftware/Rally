@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -37,10 +38,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.lynnchurch.library.FloatingActionButtonMenu;
+
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private FloatingActionButton addLocationFab;
+    private FloatingActionButtonMenu fabMenu;
     private Button doneButton;
     private Button clearButton;
     private Activity activity;
@@ -65,15 +68,26 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         this.activity = this;
 
         confirmRelativeLayout = (RelativeLayout) findViewById(R.id.confirmationRelativeLayout);
-        addLocationFab = (FloatingActionButton) findViewById(R.id.locationPickerFAB);
+        fabMenu = (FloatingActionButtonMenu) findViewById(R.id.fab_menu);
         learnView = (TextView) findViewById(R.id.learn_view);
         doneButton = (Button) findViewById(R.id.confirmationButton);
         clearButton = (Button) findViewById(R.id.clearAllButton);
         confirmRelativeLayout.setVisibility(View.GONE);
-        addLocationFab.setOnClickListener(new View.OnClickListener() {
+
+        fabMenu.setOnMenuItemClickListener(new FloatingActionButtonMenu.OnMenuItemClickListener()
+        {
             @Override
-            public void onClick(View view) {
-                openPlaceSearch();
+            public void onMenuItemClick(FloatingActionButton button, int btnId)
+            {
+                switch (btnId)
+                {
+                    case R.id.my_location_fab:
+                        Toast.makeText(MainActivity.this, "My Location FAB", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.add_location_fab:
+                        openPlaceSearch();
+                    default:
+                }
             }
         });
         doneButton.setOnClickListener(new View.OnClickListener() {
