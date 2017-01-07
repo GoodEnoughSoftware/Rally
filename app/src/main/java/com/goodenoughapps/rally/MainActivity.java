@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -23,9 +24,13 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.goodenoughapps.rally.domain.PlaceType;
+import com.goodenoughapps.rally.views.RallyPlace;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -38,9 +43,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.lynnchurch.library.FloatingActionButtonMenu;
-
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleMap mMap;
     private FloatingActionButton addLocationFAB;
@@ -48,12 +51,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Button doneButton;
     private Button clearButton;
     private Activity activity;
-    private List<Place> places;
+    private List<RallyPlace> places;
     private LinearLayout placesLinearLayout;
     private RelativeLayout confirmRelativeLayout;
     private TextView learnView;
     private int classIndex = -1;
     private final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 71;
+    private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                while(places.size() > 0) {
+                while (places.size() > 0) {
                     removePlace(0);
                 }
             }
@@ -110,6 +114,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Show intro dialog if first time opening application
         onAppStartup();
 
+        // Create an instance of GoogleAPIClient.
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
+
     }
 
     @Override
@@ -117,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(this, data);
-                addNewLocation(place);
+                addNewLocation(new RallyPlace(place));
                 if (classIndex != -1) {
                     removePlace(classIndex);
                     classIndex = -1;
@@ -133,6 +146,39 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onResume() {
         super.onResume();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
+    @Override
+    public void onConnected(Bundle connectionHint) {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (mLastLocation != null) {
+            RallyPlace place = new RallyPlace(mLastLocation);
+            addNewLocation(place);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 15));
+        }
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        
     }
 
     /**
@@ -170,16 +216,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     /**
      * Method which gets called once a place is added
-     * @param place The place to add
+     * @param rallyPlace The place to add
      */
-    public void addNewLocation(Place place) {
+    public void addNewLocation(RallyPlace rallyPlace) {
 
         // Add the location to the places list
-        places.add(place);
+        places.add(rallyPlace);
 
         // Draw a marker on the map
-        LatLng location = place.getLatLng();
-        mMap.addMarker(new MarkerOptions().position(location).title(place.getName().toString()));
+        LatLng location = rallyPlace.getLatLng();
+        mMap.addMarker(new MarkerOptions().position(location).title(rallyPlace.getTitle()));
 
         // Reposition the map by changing the bounding box
         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(Util.getBounds(places), 128));
@@ -201,9 +247,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mMap.clear();
 
-        for (Place place : places) {
+        for (RallyPlace place : places) {
             LatLng location = place.getLatLng();
-            mMap.addMarker(new MarkerOptions().position(location).title(place.getName().toString()));
+            mMap.addMarker(new MarkerOptions().position(location).title(place.getTitle()));
         }
 
     }
@@ -231,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             final Integer index = new Integer(i);
 
-            Place place = places.get(i);
+            RallyPlace place = places.get(i);
 
             // Inflate a UI view
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -239,7 +285,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             // Add the place name
             TextView nameTextView = (TextView) entryLinearLayout.findViewById(R.id.placeNameTextView);
-            nameTextView.setText(place.getName());
+            nameTextView.setText(place.getTitle());
             nameTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -346,4 +392,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
 }

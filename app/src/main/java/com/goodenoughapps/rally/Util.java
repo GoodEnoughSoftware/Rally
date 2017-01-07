@@ -1,5 +1,6 @@
 package com.goodenoughapps.rally;
 
+import com.goodenoughapps.rally.views.RallyPlace;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -18,12 +19,12 @@ public class Util {
      * @param points The points to find the middle point from
      * @return The LatLng object which is the middle point
      */
-    public static LatLng getMidPoint(List<Place> points) {
+    public static LatLng getMidPoint(List<RallyPlace> points) {
 
         double latSum = 0;
         double lngSum = 0;
 
-        for(Place point  : points) {
+        for(RallyPlace point  : points) {
 
             latSum += point.getLatLng().latitude;
             lngSum += point.getLatLng().longitude;
@@ -39,7 +40,7 @@ public class Util {
      * @param points The places to create a bounding box for
      * @return The bounding box object
      */
-    public static LatLngBounds getBounds(List<Place> points) {
+    public static LatLngBounds getBounds(List<RallyPlace> points) {
 
         double west = 0.0;
         double east = 0.0;
