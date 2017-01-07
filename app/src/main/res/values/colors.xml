@@ -4,6 +4,7 @@
     <color name="colorPrimaryLight">#6097f6</color>
     <color name="colorPrimaryDark">#3367D5</color>
     <color name="colorAccent">#0F9D58</color>
+    <color name="whiteButNotReally">#FFFFFD</color>
 
     <color name="listBackground">#4385f5</color>
     <color name="listTextBackground">#6097f6</color>

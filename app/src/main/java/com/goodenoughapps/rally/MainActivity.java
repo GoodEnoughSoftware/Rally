@@ -43,7 +43,8 @@ import me.lynnchurch.library.FloatingActionButtonMenu;
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private FloatingActionButtonMenu fabMenu;
+    private FloatingActionButton addLocationFAB;
+    private FloatingActionButton myLocationFAB;
     private Button doneButton;
     private Button clearButton;
     private Activity activity;
@@ -68,26 +69,22 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         this.activity = this;
 
         confirmRelativeLayout = (RelativeLayout) findViewById(R.id.confirmationRelativeLayout);
-        fabMenu = (FloatingActionButtonMenu) findViewById(R.id.fab_menu);
+        addLocationFAB = (FloatingActionButton) findViewById(R.id.add_location_fab);
+        myLocationFAB = (FloatingActionButton) findViewById(R.id.my_location_fab);
         learnView = (TextView) findViewById(R.id.learn_view);
         doneButton = (Button) findViewById(R.id.confirmationButton);
         clearButton = (Button) findViewById(R.id.clearAllButton);
         confirmRelativeLayout.setVisibility(View.GONE);
-
-        fabMenu.setOnMenuItemClickListener(new FloatingActionButtonMenu.OnMenuItemClickListener()
-        {
+        addLocationFAB.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onMenuItemClick(FloatingActionButton button, int btnId)
-            {
-                switch (btnId)
-                {
-                    case R.id.my_location_fab:
-                        Toast.makeText(MainActivity.this, "My Location FAB", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.add_location_fab:
-                        openPlaceSearch();
-                    default:
-                }
+            public void onClick(View view) {
+                openPlaceSearch();
+            }
+        });
+        myLocationFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "My Location Fab", Toast.LENGTH_SHORT).show();
             }
         });
         doneButton.setOnClickListener(new View.OnClickListener() {

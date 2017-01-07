@@ -5,34 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <me.lynnchurch.library.FloatingActionButtonMenu
-        android:id="@+id/fab_menu"
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_location_fab"
         app:backgroundTint="@color/colorPrimaryDark"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:layout_gravity="bottom|end"
-        android:gravity="center"
-        android:orientation="vertical"
         android:src="@drawable/ic_add"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" >
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/my_location_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_my_location"
-            app:backgroundTint="@color/colorPrimaryDark"
-            app:fabSize="mini"/>
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/add_location_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_add_location"
-            app:backgroundTint="@color/colorPrimaryDark"
-            app:fabSize="mini"/>
-    </me.lynnchurch.library.FloatingActionButtonMenu>
+        android:layout_alignParentEnd="true" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/my_location_fab"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:backgroundTint="@color/whiteButNotReally"
+        android:src="@drawable/ic_add_location"
+        android:layout_gravity="bottom|end"
+        android:layout_above="@+id/add_location_fab"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"/>
 
     <fragment
         android:layout_width="match_parent"
