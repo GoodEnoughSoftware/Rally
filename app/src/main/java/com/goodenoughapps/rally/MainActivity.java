@@ -1,11 +1,14 @@
 package com.goodenoughapps.rally;
 
+import android.*;
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -26,6 +29,7 @@ import com.goodenoughapps.rally.domain.PlaceType;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.drive.Permission;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -54,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private TextView learnView;
     private int classIndex = -1;
     private final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 71;
+    private final int PERMISSIONS_REQUEST_CODE = 24;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +132,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 // TODO: Show an error message dialog.
             } else if (resultCode == RESULT_CANCELED) {
             }
+        } else if (requestCode == PERMISSIONS_REQUEST_CODE) {
+            enableLocation();
         }
     }
 
@@ -297,14 +304,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSIONS_REQUEST_CODE);
+            }
+        } else {
+            enableLocation();
+        }
+    }
+
+    public void enableLocation() {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
         } else {
             mMap.setMyLocationEnabled(true);
         }

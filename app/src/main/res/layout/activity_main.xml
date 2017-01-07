@@ -21,7 +21,7 @@
         android:id="@+id/my_location_fab"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:backgroundTint="@color/whiteButNotReally"
+        android:backgroundTint="@color/white_grey"
         android:src="@drawable/ic_add_location"
         android:layout_gravity="bottom|end"
         android:layout_above="@+id/add_location_fab"
