@@ -41,4 +41,6 @@ public class RallyPlace {
         }
     }
 
+    public boolean isPlace() { return isPlace; }
+
 }

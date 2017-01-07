@@ -58,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private LinearLayout placesLinearLayout;
     private RelativeLayout confirmRelativeLayout;
     private TextView learnView;
+    private RallyPlace myLastLocation = null;
+    private int myLocationIndex = -1;
     private int classIndex = -1;
     private final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 71;
     private GoogleApiClient mGoogleApiClient;
@@ -92,7 +94,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         myLocationFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "My Location Fab", Toast.LENGTH_SHORT).show();
+                if(myLastLocation != null) {
+                    addNewLocation(myLastLocation);
+                    myLocationIndex = places.size() - 1;
+                    myLocationFAB.setEnabled(false);
+                }
             }
         });
         doneButton.setOnClickListener(new View.OnClickListener() {
@@ -107,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 while (places.size() > 0) {
                     removePlace(0);
                 }
+
             }
         });
 
@@ -171,8 +178,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLastLocation != null) {
             RallyPlace place = new RallyPlace(mLastLocation);
-            addNewLocation(place);
+            myLastLocation = place;
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 15));
+            myLocationFAB.setEnabled(true);
         }
 
     }
@@ -287,6 +295,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             // Add the place name
             TextView nameTextView = (TextView) entryLinearLayout.findViewById(R.id.placeNameTextView);
             nameTextView.setText(place.getTitle());
+            if(!place.isPlace()) {
+                nameTextView.setText(getString(R.string.my_location));
+            }
             nameTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -314,6 +325,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
      * @param index The location of the place to remove, from the internal list
      */
     public void removePlace(int index) {
+
+        if(index == myLocationIndex) {
+            myLocationIndex = -1;
+            myLocationFAB.setEnabled(true);
+        }
 
         places.remove(index);
         updateLocationList();

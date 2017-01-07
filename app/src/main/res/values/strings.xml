@@ -23,4 +23,5 @@
     <string name="startup_dialog_title">Welcome to Rally!</string>
     <string name="startup_dialog_content">Add the locations of your friends and pick a type of place to meetup! Rally will choose a location which works for everyone.</string>
     <string name="dismiss">DISMISS</string>
+    <string name="my_location">My Location</string>
 </resources>
